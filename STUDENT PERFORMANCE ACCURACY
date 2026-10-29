@@ -1,0 +1,28 @@
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report
+
+# Synthetic Data Example
+np.random.seed(42)
+n = 500
+data = pd.DataFrame({
+    'Study_Hours': np.random.uniform(1, 10, n),
+    'Attendance_Rate': np.random.uniform(50, 100, n),
+    'Previous_Score': np.random.uniform(40, 100, n)
+})
+# Pass if score metric is high enough
+data['Pass'] = ((data['Study_Hours'] * 5 + data['Attendance_Rate'] * 0.4) > 65).astype(int)
+
+# Model Pipeline
+X = data.drop(columns=['Pass'])
+y = data['Pass']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = RandomForestClassifier(random_state=42)
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+print(f"Student Performance Accuracy: {accuracy_score(y_test, y_pred) * 100:.2f}%")
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
