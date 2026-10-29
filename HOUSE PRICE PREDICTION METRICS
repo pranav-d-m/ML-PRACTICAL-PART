@@ -5,10 +5,9 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, mean_absolute_percentage_error
 
-# ---------------------------------------------------------
+
 # Step 1: Generate / Load Synthetic Housing Data
 # (Replace this with pd.read_csv('your_house_data.csv'))
-# ---------------------------------------------------------
 np.random.seed(42)
 n_samples = 1000
 
@@ -30,18 +29,15 @@ data['Price'] = (
     np.random.normal(0, 25000, n_samples)
 )
 
-# ---------------------------------------------------------
 # Step 2: Feature Selection & Data Splitting
-# ---------------------------------------------------------
 X = data.drop(columns=['Price'])  # Features
 y = data['Price']                 # Target Variable
 
 # Split data: 80% Training, 20% Testing
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# ---------------------------------------------------------
 # Step 3: Feature Scaling & Model Training
-# ---------------------------------------------------------
+
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
@@ -50,9 +46,7 @@ X_test_scaled = scaler.transform(X_test)
 model = RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X_train_scaled, y_train)
 
-# ---------------------------------------------------------
 # Step 4: Model Prediction & Accuracy Calculation
-# ---------------------------------------------------------
 y_pred = model.predict(X_test_scaled)
 
 # Calculating Metrics
@@ -65,9 +59,8 @@ mape = mean_absolute_percentage_error(y_test, y_pred)
 # Custom Accuracy Metric based on MAPE
 accuracy_percentage = (1 - mape) * 100
 
-# ---------------------------------------------------------
 # Step 5: Display Results
-# ---------------------------------------------------------
+
 print("=" * 40)
 print(" HOUSE PRICE PREDICTION METRICS ")
 print("=" * 40)
